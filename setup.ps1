@@ -61,6 +61,26 @@ if (Test-Path $logsPath) {
     Write-Host ("  SKIP  devlogs.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
 }
 
+# ── Ярлык DEV BLACK BOX ──
+$blackboxPath = Join-Path $scriptsPath "devblackbox.ps1"
+if (Test-Path $blackboxPath) {
+    $shortcut3 = $shell.CreateShortcut("$desktop\DEV BLACK BOX.lnk")
+    $shortcut3.TargetPath       = "powershell.exe"
+    $shortcut3.Arguments        = "-NoExit -ExecutionPolicy Bypass -File `"$blackboxPath`""
+    $shortcut3.WorkingDirectory = $scriptsPath
+    $shortcut3.Description      = "Dev Black Box - бортовой журнал dev-сессии"
+    $shortcut3.IconLocation     = "powershell.exe,0"
+    $shortcut3.Save()
+
+    $bytes3 = [System.IO.File]::ReadAllBytes("$desktop\DEV BLACK BOX.lnk")
+    $bytes3[0x15] = $bytes3[0x15] -bor 0x20
+    [System.IO.File]::WriteAllBytes("$desktop\DEV BLACK BOX.lnk", $bytes3)
+
+    Write-Host "  OK  Ярлык создан: DEV BLACK BOX.lnk" -ForegroundColor Green
+} else {
+    Write-Host ("  SKIP  devblackbox.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "  Готово! Ярлыки на рабочем столе автоматически" -ForegroundColor Green
 Write-Host "  запускаются от имени администратора." -ForegroundColor DarkGray
