@@ -81,6 +81,26 @@ if (Test-Path $blackboxPath) {
     Write-Host ("  SKIP  devblackbox.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
 }
 
+# ── Ярлык CRASH CORONER ──
+$coronerPath = Join-Path $scriptsPath "crashcoroner.ps1"
+if (Test-Path $coronerPath) {
+    $shortcut4 = $shell.CreateShortcut("$desktop\CRASH CORONER.lnk")
+    $shortcut4.TargetPath       = "powershell.exe"
+    $shortcut4.Arguments        = "-NoExit -ExecutionPolicy Bypass -File `"$coronerPath`""
+    $shortcut4.WorkingDirectory = $scriptsPath
+    $shortcut4.Description      = "Crash Coroner - детектив по падениям процессов"
+    $shortcut4.IconLocation     = "powershell.exe,0"
+    $shortcut4.Save()
+
+    $bytes4 = [System.IO.File]::ReadAllBytes("$desktop\CRASH CORONER.lnk")
+    $bytes4[0x15] = $bytes4[0x15] -bor 0x20
+    [System.IO.File]::WriteAllBytes("$desktop\CRASH CORONER.lnk", $bytes4)
+
+    Write-Host "  OK  Ярлык создан: CRASH CORONER.lnk" -ForegroundColor Green
+} else {
+    Write-Host ("  SKIP  crashcoroner.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "  Готово! Ярлыки на рабочем столе автоматически" -ForegroundColor Green
 Write-Host "  запускаются от имени администратора." -ForegroundColor DarkGray

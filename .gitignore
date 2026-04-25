@@ -11,6 +11,7 @@ killdevs-silent.bat
 # Могут содержать токены, пароли, чувствительные данные из серверов
 devlogs-saved/
 devblackbox-sessions/
+crashcoroner-cases/
 *.log
 
 # ─── Системный мусор Windows ───────────────────────────────────────────────────
