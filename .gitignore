@@ -12,6 +12,7 @@ killdevs-silent.bat
 devlogs-saved/
 devblackbox-sessions/
 crashcoroner-cases/
+envguardian-report.txt
 *.log
 
 # ─── Системный мусор Windows ───────────────────────────────────────────────────

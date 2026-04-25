@@ -101,6 +101,26 @@ if (Test-Path $coronerPath) {
     Write-Host ("  SKIP  crashcoroner.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
 }
 
+# ── Ярлык ENV GUARDIAN ──
+$guardianPath = Join-Path $scriptsPath "envguardian.ps1"
+if (Test-Path $guardianPath) {
+    $shortcut5 = $shell.CreateShortcut("$desktop\ENV GUARDIAN.lnk")
+    $shortcut5.TargetPath       = "powershell.exe"
+    $shortcut5.Arguments        = "-NoExit -ExecutionPolicy Bypass -File `"$guardianPath`""
+    $shortcut5.WorkingDirectory = $scriptsPath
+    $shortcut5.Description      = "Env Guardian - охранник .env файлов"
+    $shortcut5.IconLocation     = "powershell.exe,0"
+    $shortcut5.Save()
+
+    $bytes5 = [System.IO.File]::ReadAllBytes("$desktop\ENV GUARDIAN.lnk")
+    $bytes5[0x15] = $bytes5[0x15] -bor 0x20
+    [System.IO.File]::WriteAllBytes("$desktop\ENV GUARDIAN.lnk", $bytes5)
+
+    Write-Host "  OK  Ярлык создан: ENV GUARDIAN.lnk" -ForegroundColor Green
+} else {
+    Write-Host ("  SKIP  envguardian.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "  Готово! Ярлыки на рабочем столе автоматически" -ForegroundColor Green
 Write-Host "  запускаются от имени администратора." -ForegroundColor DarkGray
