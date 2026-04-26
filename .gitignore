@@ -13,6 +13,7 @@ devlogs-saved/
 devblackbox-sessions/
 crashcoroner-cases/
 envguardian-report.txt
+porttimemachine-history.json
 *.log
 
 # ─── Системный мусор Windows ───────────────────────────────────────────────────

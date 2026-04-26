@@ -121,6 +121,26 @@ if (Test-Path $guardianPath) {
     Write-Host ("  SKIP  envguardian.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
 }
 
+# ── Ярлык PORT TIME MACHINE ──
+$ptmPath = Join-Path $scriptsPath "porttimemachine.ps1"
+if (Test-Path $ptmPath) {
+    $shortcut6 = $shell.CreateShortcut("$desktop\PORT TIME MACHINE.lnk")
+    $shortcut6.TargetPath       = "powershell.exe"
+    $shortcut6.Arguments        = "-NoExit -ExecutionPolicy Bypass -File `"$ptmPath`""
+    $shortcut6.WorkingDirectory = $scriptsPath
+    $shortcut6.Description      = "Port Time Machine - история использования портов"
+    $shortcut6.IconLocation     = "powershell.exe,0"
+    $shortcut6.Save()
+
+    $bytes6 = [System.IO.File]::ReadAllBytes("$desktop\PORT TIME MACHINE.lnk")
+    $bytes6[0x15] = $bytes6[0x15] -bor 0x20
+    [System.IO.File]::WriteAllBytes("$desktop\PORT TIME MACHINE.lnk", $bytes6)
+
+    Write-Host "  OK  Ярлык создан: PORT TIME MACHINE.lnk" -ForegroundColor Green
+} else {
+    Write-Host ("  SKIP  porttimemachine.ps1 не найден в " + $scriptsPath) -ForegroundColor Yellow
+}
+
 Write-Host ""
 Write-Host "  Готово! Ярлыки на рабочем столе автоматически" -ForegroundColor Green
 Write-Host "  запускаются от имени администратора." -ForegroundColor DarkGray
